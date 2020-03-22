@@ -1,0 +1,7 @@
+<%= form_for @s3file do |f|%>
+  <div class="form-group">
+    <%= f.label :key, 'ファイル'%>
+    <%= f.file_field :key, class: 'form-control' %>
+  </div>
+  <%= f.submit 'アップロード', class: 'btn btn-primary'%>
+<% end %>

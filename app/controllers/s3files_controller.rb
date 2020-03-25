@@ -13,7 +13,7 @@ class S3filesController < ApplicationController
 
   def create
     # ポストされたfileデータを取得
-    file = s3file_params[:key]
+    file = params[:s3file]["key"]
     filename = file.original_filename
 
     #  一時保存用のパスにファイルを保存 
@@ -57,14 +57,14 @@ class S3filesController < ApplicationController
   private
     def get_s3_resource
       # Cloud9(EC2)使用の場合
-      Aws::S3::Resource.new(region: @region)
+      # Aws::S3::Resource.new(region: @region)
 
       # Cloud9(EC2)以外のサーバーを使用している場合
       Aws::S3::Resource.new(
         region: @region,
         credentials: Aws::Credentials.new(
             # 2-2.(3).2. で登録したアクセスキーとシークレットキー
-            ENV['AWS_ACCESS_KEY'],  
+            ENV['AWS_ACCESS_KEY'],
             ENV['AWS_SECRET_KEY']
             )
       )

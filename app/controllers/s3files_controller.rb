@@ -7,6 +7,14 @@ class S3filesController < ApplicationController
     @s3 = get_s3_resource # S3リソースオブジェクトの生成
   end
 
+  def show
+    @movies = S3file.all
+    @url = "http://d2fyobybyw406q.cloudfront.net/"
+  end
+
+  def index
+  end
+
   def new
     @s3file = S3file.new()
   end

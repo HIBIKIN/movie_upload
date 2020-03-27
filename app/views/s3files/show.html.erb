@@ -1,0 +1,9 @@
+<%= link_to "アップロードする", new_s3files_path %>
+<br>
+<hr>
+<% @movies.each do |movie| %>
+<%= movie.key %>
+<br>
+<%= link_to "#{@url}#{movie.key}" %>
+<hr>
+<% end %>

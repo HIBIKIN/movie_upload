@@ -5,5 +5,14 @@
   </div>
   <%= f.submit 'アップロード', class: 'btn btn-primary'%>
   <br>
-  <%= link_to "動画をみる", s3files_path %>
 <% end %>
+<%= link_to "動画をみる", s3files_path %>
+<hr>
+<video id="example_video_1" class="video-js vjs-default-skin"
+          controls preload="auto" width="640" height="264"
+          data-setup='{"example_option":true}'>
+  <source src="http://d2fyobybyw406q.cloudfront.net/nc121868.m3u8"
+                type="application/x-mpegURL" />
+</video>
+
+<script src="https://vjs.zencdn.net/7.7.5/video.js"></script>

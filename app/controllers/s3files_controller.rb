@@ -1,4 +1,6 @@
 class S3filesController < ApplicationController
+require 'uri'
+
 
   def initialize
     super
@@ -8,7 +10,7 @@ class S3filesController < ApplicationController
   end
 
   def show
-    @movies = S3file.all
+    @movies = S3file.all.sort.reverse
     @url = "http://d2fyobybyw406q.cloudfront.net/"
   end
 
@@ -22,7 +24,7 @@ class S3filesController < ApplicationController
   def create
     # ポストされたfileデータを取得
     file = params[:s3file]["key"]
-    filename = file.original_filename
+    filename = URI.encode_www_form_component(file.original_filename)
 
     #  一時保存用のパスにファイルを保存 
     file_path = "tmp/s3/#{filename}"

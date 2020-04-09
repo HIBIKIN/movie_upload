@@ -19,6 +19,7 @@ require 'uri'
 
   def new
     @s3file = S3file.new()
+    # flash[:alert] = 'メッセージを入力してください。'
   end
 
   def create

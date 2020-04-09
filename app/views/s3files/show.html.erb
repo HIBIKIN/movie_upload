@@ -1,8 +1,8 @@
-<%= link_to "アップロードする", new_s3files_path %>
+<%= link_to "アップロードする", new_s3files_path, class: 'btn btn-primary m-2' %>
 <br>
 <hr>
 <% @movies.each do |movie| %>
-<%= movie.key.gsub('.mp4', '.m3u8') %>
+<%= URI.decode(movie.key.gsub('.mp4', '')) %>
 <br>
 <%# <%= link_to "#{@url}#{movie.key}"  %>
 <video id="example_video_1" class="video-js vjs-default-skin"

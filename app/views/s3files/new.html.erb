@@ -3,14 +3,9 @@
     <%= f.label :key, 'ファイル'%>
     <%= f.file_field :key, class: 'form-control' %>
   </div>
+  <br>
   <%= f.submit 'アップロード', class: 'btn btn-primary'%>
   <br>
 <% end %>
-<%= link_to "動画をみる", s3files_path %>
-<hr>
-<video id="example_video_1" class="video-js vjs-default-skin"
-          controls preload="auto" width="640" height="264"
-          data-setup='{"example_option":true}'>
-  <source src="http://d2fyobybyw406q.cloudfront.net/nc121868.m3u8"
-                type="application/x-mpegURL" />
-</video>
+
+<%= link_to "動画をみる", s3files_path, class: 'btn btn-info mt-3' %>

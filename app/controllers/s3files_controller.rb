@@ -25,7 +25,14 @@ require 'uri'
   def create
     # ポストされたfileデータを取得
     file = params[:s3file]["key"]
-    filename = URI.encode_www_form_component(file.original_filename)
+    filename = file.original_filename
+
+    # DBに登録するs3fileの作成と保存
+    s3file = S3file.new(key: filename)
+    s3file.save
+
+    # バケットに保存する際の一意の識別名（ファイル名）を指定 
+    bucket_key = "#{s3file.id}.mp4"
 
     #  一時保存用のパスにファイルを保存 
     file_path = "tmp/s3/#{filename}"
@@ -34,31 +41,30 @@ require 'uri'
     # バケット名を指定
     bucket = @s3.bucket(@bucketname)
 
-    # バケットに保存する際の一意の識別名（ファイル名）を指定 
-    key = filename
     # S3にアップロードする際に特定のディレクトリに入れたい場合は、filename の先頭に
     # ディレクトリ名を追加してください
     # 例：key = "dir1/dir2/#{filename}"）
-    object = bucket.object(key)
+    object = bucket.object(bucket_key)
 
-    # upload_fileメソッドを使って、S3上のバケットにファイルをアップロードする 
-    # 　第一引数 = 一時保存してあるファイルのパス 
-    # 　第二引数 = オプション(aclはアクセス権) 
+    # upload_fileメソッドを使って、S3上のバケットにファイルをアップロードする
+    # 　第一引数 = 一時保存してあるファイルのパス
+    # 　第二引数 = オプション(aclはアクセス権)
     object.upload_file(file_path, acl:'public-read')
 
-    # アップロードしたファイルのキーをDBに保存 
-    s3file = S3file.new(key: key)
-    s3file.save
+    # アップロードしたファイルのキーをDBに保存
+    # s3file.key = filename
+    # s3file.save
 
     redirect_to root_path
   end
 
   def destroy
     s3file = S3file.find(params[:id]) #テーブルからデータを取り出す
-    key = s3file.key  # キー（ファイル名）取得 
+    bucket_key = "#{s3file.id}.mp4"  # 取得 
+    filename = s3file.key
 
     bucket = @s3.bucket(@backetname) # バケット指定
-    object = bucket.object(key)  # キー指定
+    object = bucket.object(bucket_key)  # キー指定
     object.delete  # オブジェクト（ファイル）削除
 
     s3file.destroy

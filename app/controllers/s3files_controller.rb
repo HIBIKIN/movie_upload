@@ -59,16 +59,16 @@ require 'uri'
   end
 
   def destroy
-    s3file = S3file.find(params[:id]) #テーブルからデータを取り出す
+    s3file = S3file.find(params[:key]) #テーブルからデータを取り出す
     bucket_key = "#{s3file.id}.mp4"  # 取得 
     filename = s3file.key
 
-    bucket = @s3.bucket(@backetname) # バケット指定
+    bucket = @s3.bucket(@bucketname) # バケット指定
     object = bucket.object(bucket_key)  # キー指定
     object.delete  # オブジェクト（ファイル）削除
 
     s3file.destroy
-    redirect_to s3files_path, flash: {notice: "ファイル [#{key}] を削除しました"}
+    redirect_to s3files_path, flash: {notice: "ファイル [#{s3file.key}] を削除しました"}
   end
 
   private
